@@ -5,6 +5,10 @@
     "version": "0.1",
     "description": "Focus on the Youtube player with a the press of a button",
     "homepage_url": "https://daniwa.github.io",
+    "options_page": "options.html",
+    "permissions": [
+        "storage"
+    ],
     "content_scripts": [
         {
             "matches": ["*://www.youtube.com/*"],

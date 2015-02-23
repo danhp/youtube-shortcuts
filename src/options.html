@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Youtube Focus Shortcut</title>
+        <link rel="stylesheet" href="chrome-bootstrap/chrome-bootstrap.css">
+        <style>
+            .chrome-bootstrap .frame .view {
+                -webkit-margin-start: 170px
+            }
+
+            input[type='text'] {
+                width: 350px;
+            }
+
+            #success_message {
+                margin-top: 10px;
+                padding: 5px 10px;
+                opacity: 0;
+                transition: opacity 0.5s ease-out;
+            }
+
+            #success_message.visible {
+                opacity: 1;
+            }
+        </style>
+        <script src="options.js"></script>
+    </head>
+    <body class="chrome-bootstrap">
+        <div class="frame">
+            <div class="navigation">
+                <h1>
+                    <a href="https://github.com/daniwa/youtube-focus">YouTube Focus Shortcut</a>
+                </h1>
+                <ul class="menu">
+                    <li class="selected">
+                        <a href="#shortcuts">Shortcuts</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mainview view">
+                <div id="settings" class="selected">
+                    <header>
+                        <h1>Keyboard Shortcuts</h1>
+                    </header>
+                    <div class="content">
+                        <section>
+                            <h3>Customize Keys</h3>
+                            <p>Specify the key you would like to use.</p>
+                            <label for="focus">Focus Player</label>
+                            <input type="text" id="focus" autofocus value="Focus">
+                        </section>
+                        <section>
+                            <h3>Existing YouTube Shortcuts (don't shadow these)</h3>
+                            <p>K - Pause the video.</p>
+                            <p>J - Rewind 10 secs.</p>
+                            <p>L - Skip forward 10 secs.</p>
+                            <p>/ - Focus on search box.</p>
+                        </section>
+                        <section>
+                            <h3>Aditional YouTube Player Shortcuts (once you have focus)</h3>
+                            <p>Space - Pause the video.</p>
+                            <p>Left - Rewind 5 sec.</p>
+                            <p>Right - Skip forward 5 sec.</p>
+                            <p>1-9 - Seek to the 10% to 90% of the video</p>
+                            <p>0 - Rewind to beggining of video</p>
+                            <p>Up - Increase volume.</p>
+                            <p>Down - Decrease volume.</p>
+                            <p>F - Fullcreen.</p>
+                            <p>Esc - Exit full screen.</p>
+                        </section>
+                        <div class="controls">
+                            <button id="save">Save</button>
+                            <button id="reset">Reset to Default</button>
+                        </div>
+                        <div id="success_message" class="alert">Options saved</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
