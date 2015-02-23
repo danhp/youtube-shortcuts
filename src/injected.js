@@ -10,11 +10,20 @@ function checkShortcuts(event) {
         case 190:
             focusPlayer();
             break;
+        case 27:
+            unfocusPlayer();
+            break;
         default:
             break;
     }
 }
 
-function focusPlayer(){
-    // Focus the player
+function focusPlayer() {
+    var mp = document.getElementById("movie_player");
+    mp.focus();
+}
+
+function unfocusPlayer() {
+    var b = document.getElementById("movie_player");
+    b.blur();
 }
