@@ -45,11 +45,16 @@
                     </header>
                     <div class="content">
                         <section>
-                            <h3>Customize Keys</h3>
-                            <p>Specify the key you would like to use.</p>
+                            <h3>Custom Shortcuts</h3>
+                            <p>Specify the key combination you would like to use.</p>
+                            <p>Hitting Esc will unfocus the player.</p>
                             <label for="focus">Focus Player</label>
-                            <input type="text" id="focus" autofocus value="Focus">
+                            <input type="text" id="focus" autofocus>
                         </section>
+                        <div class="controls">
+                            <button id="save">Save</button>
+                            <button id="reset">Reset to Default</button>
+                        </div>
                         <section>
                             <h3>Existing YouTube Shortcuts (don't shadow these)</h3>
                             <p>K - Pause the video.</p>
@@ -69,10 +74,6 @@
                             <p>F - Fullcreen.</p>
                             <p>Esc - Exit full screen.</p>
                         </section>
-                        <div class="controls">
-                            <button id="save">Save</button>
-                            <button id="reset">Reset to Default</button>
-                        </div>
                         <div id="success_message" class="alert">Options saved</div>
                     </div>
                 </div>
