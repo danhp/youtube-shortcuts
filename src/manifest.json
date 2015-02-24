@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
 
-    "name": "Youtube™ Focus Shortcut",
-    "version": "1.0.0",
+    "name": "Youtube™ Shortcuts",
+    "version": "1.1.0",
     "description": "Focus on the Youtube player with a the press of a button",
     "homepage_url": "https://daniwa.github.io",
     "options_page": "options.html",

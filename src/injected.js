@@ -12,6 +12,15 @@ function checkShortcuts(event) {
             return;
         }
 
+        if (event.keyCode == o.subbox
+                    && event.metaKey == o.metasubbox
+                    && event.ctrlKey == o.ctrlsubbox
+                    && event.altKey == o.altsubbox
+                    && event.shiftKey == o.shiftsubbox) {
+            goToSubs();
+            return;
+        }
+
         if (event.keyCode == o.focus
                     && event.metaKey == o.metafocus
                     && event.ctrlKey == o.ctrlfocus
@@ -23,6 +32,9 @@ function checkShortcuts(event) {
     });
 }
 
+function goToSubs() {
+    window.location.href = "https://www.youtube.com/feed/subscriptions";
+}
 function focusPlayer() {
     var mp = document.getElementById("movie_player");
     mp.focus();

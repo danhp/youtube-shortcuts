@@ -1,5 +1,6 @@
-var version = '1.0.0';
-var tempEvent;
+var version = '1.1.0';
+var focusKeyEvent;
+var subboxKeyEvent;
 
 function update() {
     localStorage.version = version;
@@ -11,7 +12,13 @@ window.addEventListener('load', function(event){
 
 function init() {
     document.getElementById('focus').addEventListener('keydown', function(e) {
-        updateKeyChoice(e);
+        focusKeyEvent = e;
+        updateKeyChoice('focus', e);
+    });
+
+    document.getElementById('subbox').addEventListener('keydown', function(e) {
+        subboxKeyEvent = e;
+        updateKeyChoice('subbox', e);
     });
 
     document.getElementById('save').addEventListener('click', function() {
@@ -42,6 +49,7 @@ function init() {
     }
 
     initKey('focus');
+    initKey('subbox');
 }
 
 function initKey(key) {
@@ -58,53 +66,9 @@ function initKey(key) {
             if(ctrl===true) result += 'Ctrl + ';
             if(alt===true) result += 'Alt + ';
             if(shift===true) result += 'Shift + ';
-            if(code>=48 && code<=90) {
-                result += String.fromCharCode(code);
-            } else if(code==37) {
-                result += 'Left';
-            } else if(code==38) {
-                result += 'Up';
-            } else if(code==39) {
-                result += 'Right';
-            } else if(code==40) {
-                result += 'Down';
-            } else if(code==188) {
-                result += ',';
-            } else if(code==190) {
-                result += '.';
-            } else if(code==191) {
-                result += '/';
-            } else if(code==186) {
-                result += ';';
-            } else if(code==222) {
-                result += '\'';
-            } else if(code==219) {
-                result += '[';
-            } else if(code==221) {
-                result += ']';
-            } else if(code==220) {
-                result += '\\';
-            } else if(code==192) {
-                result += '`';
-            } else if(code==27) {
-                result += 'Esc';
-            } else if(code==32) {
-                result += 'Space';
-            } else if(code==13) {
-                result += 'Enter';
-            } else if(code==8) {
-                result += 'Backspace';
-            } else if(code==9) {
-                result += 'Tab';
-            } else if(code==20) {
-                result += 'Caps Lock';
-            } else if(code==187) {
-                result += '=';
-            } else if(code==189) {
-                result += '-';
-            } else if(event.keyCode!=91 && event.keyCode!=93 && !(event.keyCode>=16 && event.keyCode<=19)) {
-                result += '[' + code + ']';
-            }
+
+            result += translate(code);
+
             document.getElementById(key).value = result;
         } else {
             document.getElementById(key).value = 'disabled';
@@ -112,74 +76,93 @@ function initKey(key) {
     });
 }
 
-function updateKeyChoice(event) {
-    tempEvent = event;
-
+function updateKeyChoice(key, event) {
     var result = '';
     if(event.metaKey) result += 'Cmd + ';
     if(event.ctrlKey) result += 'Ctrl + ';
     if(event.altKey) result += 'Alt + ';
     if(event.shiftKey) result += 'Shift + ';
-    if(event.keyCode>=48 && event.keyCode<=90) {
-        result += String.fromCharCode(event.keyCode);
-    } else if(event.keyCode==37) {
-        result += 'Left';
-    } else if(event.keyCode==38) {
-        result += 'Up';
-    } else if(event.keyCode==39) {
-        result += 'Right';
-    } else if(event.keyCode==40) {
-        result += 'Down';
-    } else if(event.keyCode==188) {
-        result += ',';
-    } else if(event.keyCode==190) {
-        result += '.';
-    } else if(event.keyCode==191) {
-        result += '/';
-    } else if(event.keyCode==186) {
-        result += ';';
-    } else if(event.keyCode==222) {
-        result += '\'';
-    } else if(event.keyCode==219) {
-        result += '[';
-    } else if(event.keyCode==221) {
-        result += ']';
-    } else if(event.keyCode==220) {
-        result += '\\';
-    } else if(event.keyCode==192) {
-        result += '`';
-    } else if(event.keyCode==27) {
-        result += 'Esc';
-    } else if(event.keyCode==32) {
-        result += 'Space';
-    } else if(event.keyCode==13) {
-        result += 'Enter';
-    } else if(event.keyCode==8) {
-        result += 'Backspace';
-    } else if(event.keyCode==9) {
-        result += 'Tab';
-    } else if(event.keyCode==20) {
-        result += 'Caps Lock';
-    } else if(event.keyCode==187) {
-        result += '=';
-    } else if(event.keyCode==189) {
-        result += '-';
-    } else if(event.keyCode!=91 && event.keyCode!=93 && !(event.keyCode>=16 && event.keyCode<=19)) {
-        result += '[' + event.keyCode + ']';
-    }
+
+    result += translate(event.keyCode);
 
     event.target.value = result;
     event.preventDefault();
 }
 
-function saveKeys() {
-    var e = tempEvent;
+function translate(code) {
+    var result = '';
 
-    chrome.storage.sync.set({'focus': e.keyCode});
-    chrome.storage.sync.set({'metafocus': e.metaKey});
-    chrome.storage.sync.set({'ctrlfocus': e.ctrlKey});
-    chrome.storage.sync.set({'altfocus': e.altKey});
-    chrome.storage.sync.set({'shiftfocus': e.shiftKey});
+    if(code>=48 && code<=90) {
+        result += String.fromCharCode(code);
+    } else if(code==37) {
+        result += 'Left';
+    } else if(code==38) {
+        result += 'Up';
+    } else if(code==39) {
+        result += 'Right';
+    } else if(code==40) {
+        result += 'Down';
+    } else if(code==188) {
+        result += ',';
+    } else if(code==190) {
+        result += '.';
+    } else if(code==191) {
+        result += '/';
+    } else if(code==186) {
+        result += ';';
+    } else if(code==222) {
+        result += '\'';
+    } else if(code==219) {
+        result += '[';
+    } else if(code==221) {
+        result += ']';
+    } else if(code==220) {
+        result += '\\';
+    } else if(code==192) {
+        result += '`';
+    } else if(code==27) {
+        result += 'Esc';
+    } else if(code==32) {
+        result += 'Space';
+    } else if(code==13) {
+        result += 'Enter';
+    } else if(code==8) {
+        result += 'Backspace';
+    } else if(code==9) {
+        result += 'Tab';
+    } else if(code==20) {
+        result += 'Caps Lock';
+    } else if(code==187) {
+        result += '=';
+    } else if(code==189) {
+        result += '-';
+    } else if(code !=91 && code !=93 && !(code >=16 && code <=19)) {
+        result += '[' + code + ']';
+    }
+
+    return result;
+}
+
+function saveKeys() {
+    var e = focusKeyEvent;
+
+    if (e) {
+        chrome.storage.sync.set({'focus': e.keyCode});
+        chrome.storage.sync.set({'metafocus': e.metaKey});
+        chrome.storage.sync.set({'ctrlfocus': e.ctrlKey});
+        chrome.storage.sync.set({'altfocus': e.altKey});
+        chrome.storage.sync.set({'shiftfocus': e.shiftKey});
+    }
+
+    e = subboxKeyEvent;
+
+    if (e) {
+        chrome.storage.sync.set({'subbox': e.keyCode});
+        chrome.storage.sync.set({'metasubbox': e.metaKey});
+        chrome.storage.sync.set({'ctrlsubbox': e.ctrlKey});
+        chrome.storage.sync.set({'altsubbox': e.altKey});
+        chrome.storage.sync.set({'shiftsubbox': e.shiftKey});
+    }
 }
 
 function resetKeys() {
@@ -189,5 +172,12 @@ function resetKeys() {
     chrome.storage.sync.set({'altfocus': false});
     chrome.storage.sync.set({'shiftfocus': false});
 
+    chrome.storage.sync.set({'subbox': 72});
+    chrome.storage.sync.set({'metasubbox': false});
+    chrome.storage.sync.set({'ctrlsubbox': false});
+    chrome.storage.sync.set({'altsubbox': false});
+    chrome.storage.sync.set({'shiftsubbox': false});
+
     initKey('focus');
+    initKey('subbox');
 }

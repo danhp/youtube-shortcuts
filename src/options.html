@@ -10,7 +10,7 @@
             }
 
             input[type='text'] {
-                width: 350px;
+                width: 100px;
             }
 
             #success_message {
@@ -30,7 +30,7 @@
         <div class="frame">
             <div class="navigation">
                 <h1>
-                    <a href="https://github.com/daniwa/youtube-focus">YouTube Focus Shortcut</a>
+                    <a href="https://github.com/daniwa/youtube-shortcuts">YouTube Shortcuts</a>
                 </h1>
                 <ul class="menu">
                     <li class="selected">
@@ -50,11 +50,15 @@
                             <p>Hitting Esc will unfocus the player.</p>
                             <label for="focus">Focus Player</label>
                             <input type="text" id="focus" autofocus>
+                            <br>
+                            <label for="subbox">Go to Subcriptions</label>
+                            <input type="text" id="subbox" autofocus>
                         </section>
                         <div class="controls">
                             <button id="save">Save</button>
                             <button id="reset">Reset to Default</button>
                         </div>
+                        <div id="success_message" class="alert">Options saved</div>
                         <section>
                             <h3>Existing YouTube Shortcuts (don't shadow these)</h3>
                             <p>K - Pause the video.</p>
@@ -74,7 +78,6 @@
                             <p>F - Fullcreen.</p>
                             <p>Esc - Exit full screen.</p>
                         </section>
-                        <div id="success_message" class="alert">Options saved</div>
                     </div>
                 </div>
             </div>
