@@ -1,6 +1,7 @@
-var version = '1.1.0';
+var version = '1.2.0';
 var focusKeyEvent;
 var subboxKeyEvent;
+var userKeyEvent;
 
 function update() {
     localStorage.version = version;
@@ -21,6 +22,11 @@ function init() {
         updateKeyChoice('subbox', e);
     });
 
+    document.getElementById('user').addEventListener('keydown', function(e) {
+        userKeyEvent = e;
+        updateKeyChoice('user', e);
+    });
+
     document.getElementById('save').addEventListener('click', function() {
         saveKeys();
 
@@ -37,7 +43,6 @@ function init() {
         resetKeys();
     });
 
-
     if (!localStorage.version) {
         localStorage.version = version;
         resetKeys();
@@ -50,6 +55,7 @@ function init() {
 
     initKey('focus');
     initKey('subbox');
+    initKey('user');
 }
 
 function initKey(key) {
@@ -163,6 +169,16 @@ function saveKeys() {
         chrome.storage.sync.set({'altsubbox': e.altKey});
         chrome.storage.sync.set({'shiftsubbox': e.shiftKey});
     }
+
+    e = userKeyEvent;
+
+    if (e) {
+        chrome.storage.sync.set({'user': e.keyCode});
+        chrome.storage.sync.set({'metauser': e.metaKey});
+        chrome.storage.sync.set({'ctrluser': e.ctrlKey});
+        chrome.storage.sync.set({'altuser': e.altKey});
+        chrome.storage.sync.set({'shiftuser': e.shiftKey});
+    }
 }
 
 function resetKeys() {
@@ -178,6 +194,13 @@ function resetKeys() {
     chrome.storage.sync.set({'altsubbox': false});
     chrome.storage.sync.set({'shiftsubbox': false});
 
+    chrome.storage.sync.set({'user': 85});
+    chrome.storage.sync.set({'metauser': false});
+    chrome.storage.sync.set({'ctrluser': false});
+    chrome.storage.sync.set({'altuser': false});
+    chrome.storage.sync.set({'shiftuser': false});
+
     initKey('focus');
     initKey('subbox');
+    initKey('user');
 }

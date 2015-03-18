@@ -25,8 +25,17 @@ function checkShortcuts(event) {
                     && event.metaKey == o.metafocus
                     && event.ctrlKey == o.ctrlfocus
                     && event.altKey == o.altfocus
-                    && event.shiftKey == o.shiftfocus){
+                    && event.shiftKey == o.shiftfocus) {
             focusPlayer();
+            return;
+        }
+
+        if (event.keyCode == o.user
+                    && event.metaKey == o.metauser
+                    && event.ctrlKey == o.ctrluser
+                    && event.altKey == o.altuser
+                    && event.shiftKey == o.shiftuser) {
+            goToUser();
             return;
         }
     });
@@ -35,6 +44,7 @@ function checkShortcuts(event) {
 function goToSubs() {
     window.location.href = "https://www.youtube.com/feed/subscriptions";
 }
+
 function focusPlayer() {
     var mp = document.getElementById("movie_player");
     mp.focus();
@@ -43,4 +53,8 @@ function focusPlayer() {
 function unfocusPlayer() {
     var b = document.getElementById("movie_player");
     b.blur();
+}
+
+function goToUser() {
+    window.location.href = document.querySelectorAll('.yt-user-photo')[0].href;
 }
