@@ -61,28 +61,17 @@ function goToUser() {
     window.location.href = document.querySelectorAll('.yt-user-photo')[0].href;
 }
 
-// JK NAVIGATION
-var selector_all = null;
+// LIST NAVIGATION
 var selector = "li div div h3 a:nth(*)";
+var selector_all = selector.replace(':nth(*)', '');
 var previousSelection = null;
 
 if (localStorage.idx) {
-    localStorage.idx = 0;
-}
-
-function setup() {
-    selector_all = selector.replace(':nth(*)', '');
-    selector = selector;
-    select();
-}
-
-function active_selection(idx) {
-    return selector.replace('*', idx);
+    localStorage.idx = -1;
 }
 
 var select = function() {
-    var link = $(active_selection(localStorage.idx));
-    console.log(link);
+    var link = $(selector.replace('*', localStorage.idx));
     if (previousSelection) {
         if (link.get()[0] == previousSelection) {
             return;
@@ -93,8 +82,6 @@ var select = function() {
     link.focus();
     previousSelection = link.get()[0];
 };
-
-setup();
 
 key('j', function() {
     if (localStorage.idx < $(selector_all).length-1) {
@@ -108,4 +95,42 @@ key('k', function() {
         localStorage.idx--;
         select();
     }
+});
+
+// NAV BAR SHORTCUTS
+var tab_selector = ".yt-uix-button-epic-nav-item:nth(*)";
+var tab_selector_all = tab_selector.replace(':nth(*)', '');
+
+function computeIndex() {
+    var s = ".appbar-nav-menu";
+    var i = 0;
+    $(s).children().children().each(function() {
+        if ($(this)[0].localName == "h2") {
+            localStorage.tidx = i;
+        } else {
+            i++;
+        }
+    });
+}
+key(']', function() {
+    computeIndex();
+    if (localStorage.tidx < $(tab_selector_all).length - 1) {
+        var link = $(tab_selector.replace('*', localStorage.tidx));
+        location.href = link.attr('href');
+    }
+});
+
+key('[', function() {
+    computeIndex();
+    if (localStorage.tidx > 0) {
+        localStorage.tidx--;
+        var link = $(tab_selector.replace('*', localStorage.tidx));
+        location.href = link.attr('href');
+    }
+});
+
+// In case selection isn't in focus.
+key('return', function() {
+    var link = $(selector.replace('*', localStorage.idx));
+    location.href = link.attr('href');
 });
