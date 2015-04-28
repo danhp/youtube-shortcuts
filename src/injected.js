@@ -66,9 +66,7 @@ var selector = "li div div h3 a:nth(*)";
 var selector_all = selector.replace(':nth(*)', '');
 var previousSelection = null;
 
-if (localStorage.idx) {
-    localStorage.idx = -1;
-}
+localStorage.idx = -1;
 
 var select = function() {
     var link = $(selector.replace('*', localStorage.idx));
@@ -131,6 +129,7 @@ key('[', function() {
 
 // In case selection isn't in focus.
 key('return', function() {
+    if (localStorage.idx <= -1) return;
     var link = $(selector.replace('*', localStorage.idx));
     location.href = link.attr('href');
 });
