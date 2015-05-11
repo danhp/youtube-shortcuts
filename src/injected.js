@@ -133,3 +133,10 @@ key('return', function() {
     var link = $(selector.replace('*', localStorage.idx));
     location.href = link.attr('href');
 });
+
+// Open link in a new tab
+key('o', function() {
+    if (localStorage.idx <= -1) return;
+    var link = $(selector.replace('*', localStorage.idx));
+    window.open(link.attr('href'));
+});
