@@ -58,11 +58,19 @@ function unfocus() {
 }
 
 function goToUser() {
-    window.location.href = document.querySelectorAll('.yt-user-photo')[0].href;
+    var link = document.querySelectorAll('.yt-user-photo')[0];
+    if (typeof link !== "undefined") {
+        // Go to user page from the video page.
+        window.location.href = link.href;
+    } else {
+        // Go to user from list entry
+        var userList = document.querySelectorAll('.yt-lockup-byline a');
+        window.location.href = userList[localStorage.idx].href;
+    }
 }
 
 // LIST NAVIGATION
-var selector = "li div div h3 a:nth(*)";
+var selector = "li div div div h3 a:nth(*)";
 var selector_all = selector.replace(':nth(*)', '');
 var previousSelection = null;
 
@@ -85,6 +93,9 @@ key('j', function() {
     if (localStorage.idx < $(selector_all).length-1) {
         localStorage.idx++;
         select();
+    } else {
+        // Click the load more button
+        $(".yt-uix-load-more").click();
     }
 });
 
@@ -138,5 +149,8 @@ key('return', function() {
 key('o', function() {
     if (localStorage.idx <= -1) return;
     var link = $(selector.replace('*', localStorage.idx));
-    window.open(link.attr('href'));
+    var test = link.attr('href');
+    if (typeof test !== "undefined"){
+        window.open(test);
+    }
 });
