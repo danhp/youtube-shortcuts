@@ -2,6 +2,8 @@ var version = '1.2.0';
 var focusKeyEvent;
 var subboxKeyEvent;
 var userKeyEvent;
+var likeKeyEvent;
+var dislikeKeyEvent;
 
 function update() {
     localStorage.version = version;
@@ -25,6 +27,16 @@ function init() {
     document.getElementById('user').addEventListener('keydown', function(e) {
         userKeyEvent = e;
         updateKeyChoice('user', e);
+    });
+
+    document.getElementById('like').addEventListener('keydown', function(e) {
+        likeKeyEvent = e;
+        updateKeyChoice('like', e);
+    });
+
+    document.getElementById('dislike').addEventListener('keydown', function(e) {
+        dislikeKeyEvent = e;
+        updateKeyChoice('dislike', e);
     });
 
     document.getElementById('save').addEventListener('click', function() {
@@ -56,6 +68,8 @@ function init() {
     initKey('focus');
     initKey('subbox');
     initKey('user');
+    initKey('like');
+    initKey('dislike');
 }
 
 function initKey(key) {
@@ -151,7 +165,6 @@ function translate(code) {
 
 function saveKeys() {
     var e = focusKeyEvent;
-
     if (e) {
         chrome.storage.sync.set({'focus': e.keyCode});
         chrome.storage.sync.set({'metafocus': e.metaKey});
@@ -161,7 +174,6 @@ function saveKeys() {
     }
 
     e = subboxKeyEvent;
-
     if (e) {
         chrome.storage.sync.set({'subbox': e.keyCode});
         chrome.storage.sync.set({'metasubbox': e.metaKey});
@@ -171,13 +183,30 @@ function saveKeys() {
     }
 
     e = userKeyEvent;
-
     if (e) {
         chrome.storage.sync.set({'user': e.keyCode});
         chrome.storage.sync.set({'metauser': e.metaKey});
         chrome.storage.sync.set({'ctrluser': e.ctrlKey});
         chrome.storage.sync.set({'altuser': e.altKey});
         chrome.storage.sync.set({'shiftuser': e.shiftKey});
+    }
+
+    e = likeKeyEvent;
+    if (e) {
+        chrome.storage.sync.set({'like': e.keyCode});
+        chrome.storage.sync.set({'metalike': e.metaKey});
+        chrome.storage.sync.set({'ctrllike': e.ctrlKey});
+        chrome.storage.sync.set({'altlike': e.altKey});
+        chrome.storage.sync.set({'shiftlike': e.shiftKey});
+    }
+
+    e = dislikeKeyEvent;
+    if (e) {
+        chrome.storage.sync.set({'dislike': e.keyCode});
+        chrome.storage.sync.set({'metadislike': e.metaKey});
+        chrome.storage.sync.set({'ctrldislike': e.ctrlKey});
+        chrome.storage.sync.set({'altdislike': e.altKey});
+        chrome.storage.sync.set({'shiftdislike': e.shiftKey});
     }
 }
 
@@ -200,7 +229,21 @@ function resetKeys() {
     chrome.storage.sync.set({'altuser': false});
     chrome.storage.sync.set({'shiftuser': false});
 
+    chrome.storage.sync.set({'like': 65});
+    chrome.storage.sync.set({'metalike': false});
+    chrome.storage.sync.set({'ctrllike': false});
+    chrome.storage.sync.set({'altlike': false});
+    chrome.storage.sync.set({'shiftlike': false});
+
+    chrome.storage.sync.set({'dislike': 90});
+    chrome.storage.sync.set({'metadislike': false});
+    chrome.storage.sync.set({'ctrldislike': false});
+    chrome.storage.sync.set({'altdislike': false});
+    chrome.storage.sync.set({'shiftdislike': false});
+
     initKey('focus');
     initKey('subbox');
     initKey('user');
+    initKey('like');
+    initKey('dislike');
 }

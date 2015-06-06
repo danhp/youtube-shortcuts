@@ -38,11 +38,41 @@ function checkShortcuts(event) {
             goToUser();
             return;
         }
+
+        if (event.keyCode == o.like &&
+                    event.metaKey == o.metalike &&
+                    event.ctrlKey == o.ctrllike &&
+                    event.altKey == o.altlike &&
+                    event.shiftKey == o.shiftlike) {
+            pressLike();
+            return;
+        }
+
+        if (event.keyCode == o.dislike &&
+                    event.metaKey == o.metadislike &&
+                    event.ctrlKey == o.ctrldislike &&
+                    event.altKey == o.altdislike &&
+                    event.shiftKey == o.shiftdislike) {
+            pressDislike();
+            return;
+        }
     });
 }
 
 function goToSubs() {
     window.location.href = "https://www.youtube.com/feed/subscriptions";
+}
+
+function goToUser() {
+    var link = document.querySelectorAll('.yt-user-photo')[0];
+    if (typeof link !== "undefined") {
+        // Go to user page from the video page.
+        window.location.href = link.href;
+    } else {
+        // Go to user from list entry
+        var userList = document.querySelectorAll('.yt-lockup-byline a');
+        window.location.href = userList[idx].href;
+    }
 }
 
 function focusPlayer() {
@@ -57,27 +87,15 @@ function unfocus() {
     b.blur();
 }
 
-function goToUser() {
-    var link = document.querySelectorAll('.yt-user-photo')[0];
-    if (typeof link !== "undefined") {
-        // Go to user page from the video page.
-        window.location.href = link.href;
-    } else {
-        // Go to user from list entry
-        var userList = document.querySelectorAll('.yt-lockup-byline a');
-        window.location.href = userList[localStorage.idx].href;
-    }
-}
-
 // LIST NAVIGATION
 var selector = "li div div div h3 a:nth(*)";
 var selector_all = selector.replace(':nth(*)', '');
 var previousSelection = null;
 
-localStorage.idx = -1;
+var idx = -1;
 
 var select = function() {
-    var link = $(selector.replace('*', localStorage.idx));
+    var link = $(selector.replace('*', idx));
     if (previousSelection) {
         if (link.get()[0] == previousSelection) {
             return;
@@ -90,18 +108,18 @@ var select = function() {
 };
 
 key('j', function() {
-    if (localStorage.idx < $(selector_all).length-1) {
-        localStorage.idx++;
+    if (idx < $(selector_all).length-1) {
+        idx++;
         select();
-    } else {
-        // Click the load more button
-        $(".yt-uix-load-more").click();
+        if (idx == $(selector_all).length-2) {
+            $(".yt-uix-load-more").click();
+        }
     }
 });
 
 key('k', function() {
-    if (localStorage.idx > 0) {
-        localStorage.idx--;
+    if (idx > 0) {
+        idx--;
         select();
     }
 });
@@ -110,6 +128,7 @@ key('k', function() {
 var tab_selector = ".yt-uix-button-epic-nav-item:nth(*)";
 var tab_selector_all = tab_selector.replace(':nth(*)', '');
 
+computeIndex();
 function computeIndex() {
     var s = ".appbar-nav-menu";
     var i = 0;
@@ -121,8 +140,8 @@ function computeIndex() {
         }
     });
 }
+
 key(']', function() {
-    computeIndex();
     if (localStorage.tidx < $(tab_selector_all).length - 1) {
         var link = $(tab_selector.replace('*', localStorage.tidx));
         location.href = link.attr('href');
@@ -130,7 +149,6 @@ key(']', function() {
 });
 
 key('[', function() {
-    computeIndex();
     if (localStorage.tidx > 0) {
         localStorage.tidx--;
         var link = $(tab_selector.replace('*', localStorage.tidx));
@@ -138,17 +156,37 @@ key('[', function() {
     }
 });
 
+// VIDEO PAGE SHORTCUTS
+// Like
+function pressLike() {
+    var button = $('.like-button-renderer-like-button');
+    click(button);
+}
+// Dislike
+function pressDislike() {
+    var button = $('.like-button-renderer-dislike-button');
+    click(button);
+}
+function click(button) {
+    if (button[0].classList.contains('hid')) {
+        button[1].click();
+    } else {
+        button[0].click();
+    }
+}
+
+// LINK OPENING SHORTCUTS
 // In case selection isn't in focus.
 key('return', function() {
-    if (localStorage.idx <= -1) return;
-    var link = $(selector.replace('*', localStorage.idx));
+    if (idx <= -1) return;
+    var link = $(selector.replace('*', idx));
     location.href = link.attr('href');
 });
 
 // Open link in a new tab
 key('o', function() {
-    if (localStorage.idx <= -1) return;
-    var link = $(selector.replace('*', localStorage.idx));
+    if (idx <= -1) return;
+    var link = $(selector.replace('*', idx));
     var test = link.attr('href');
     if (typeof test !== "undefined"){
         window.open(test);
