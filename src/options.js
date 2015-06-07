@@ -4,6 +4,7 @@ var subboxKeyEvent;
 var userKeyEvent;
 var likeKeyEvent;
 var dislikeKeyEvent;
+var subscribeKeyEvent;
 
 function update() {
     localStorage.version = version;
@@ -39,6 +40,11 @@ function init() {
         updateKeyChoice('dislike', e);
     });
 
+    document.getElementById('subscribe').addEventListener('keydown', function(e) {
+        subscribeKeyEvent = e;
+        updateKeyChoice('subscribe', e);
+    });
+
     document.getElementById('save').addEventListener('click', function() {
         saveKeys();
 
@@ -70,6 +76,7 @@ function init() {
     initKey('user');
     initKey('like');
     initKey('dislike');
+    initKey('subscribe');
 }
 
 function initKey(key) {
@@ -208,6 +215,15 @@ function saveKeys() {
         chrome.storage.sync.set({'altdislike': e.altKey});
         chrome.storage.sync.set({'shiftdislike': e.shiftKey});
     }
+
+    e = subscribeKeyEvent;
+    if (e) {
+        chrome.storage.sync.set({'subscribe': e.keyCode});
+        chrome.storage.sync.set({'metasubscribe': e.metaKey});
+        chrome.storage.sync.set({'ctrlsubscribe': e.ctrlKey});
+        chrome.storage.sync.set({'altsubscribe': e.altKey});
+        chrome.storage.sync.set({'shiftsubscribe': e.shiftKey});
+    }
 }
 
 function resetKeys() {
@@ -241,9 +257,16 @@ function resetKeys() {
     chrome.storage.sync.set({'altdislike': false});
     chrome.storage.sync.set({'shiftdislike': false});
 
+    chrome.storage.sync.set({'subscribe': 83});
+    chrome.storage.sync.set({'metasubscribe': false});
+    chrome.storage.sync.set({'ctrlsubscribe': false});
+    chrome.storage.sync.set({'altsubscribe': false});
+    chrome.storage.sync.set({'shiftsubscribe': false});
+
     initKey('focus');
     initKey('subbox');
     initKey('user');
     initKey('like');
     initKey('dislike');
+    initKey('subscribe');
 }

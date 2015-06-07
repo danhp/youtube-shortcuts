@@ -56,6 +56,15 @@ function checkShortcuts(event) {
             pressDislike();
             return;
         }
+
+        if (event.keyCode == o.subscribe &&
+                    event.metaKey == o.metasubscribe &&
+                    event.ctrlKey == o.ctrlsubscribe &&
+                    event.altKey == o.altsubscribe &&
+                    event.shiftKey == o.shiftsubscribe ) {
+            pressSubscribe();
+            return;
+        }
     });
 }
 
@@ -157,12 +166,10 @@ key('[', function() {
 });
 
 // VIDEO PAGE SHORTCUTS
-// Like
 function pressLike() {
     var button = $('.like-button-renderer-like-button');
     click(button);
 }
-// Dislike
 function pressDislike() {
     var button = $('.like-button-renderer-dislike-button');
     click(button);
@@ -172,6 +179,13 @@ function click(button) {
         button[1].click();
     } else {
         button[0].click();
+    }
+}
+
+function pressSubscribe() {
+    var buttons = $('.yt-uix-subscription-button');
+    if (buttons.length == 1) {
+        $('.yt-uix-subscription-button')[0].click();
     }
 }
 
