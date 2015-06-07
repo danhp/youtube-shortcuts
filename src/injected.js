@@ -74,6 +74,15 @@ function checkShortcuts(event) {
             pressAddToPlaylist();
             return;
         }
+
+        if (event.keyCode == o.info &&
+                    event.metaKey == o.metainfo &&
+                    event.ctrlKey == o.ctrlinfo &&
+                    event.altKey == o.altinfo &&
+                    event.shiftKey == o.shiftinfo) {
+            pressMoreInfo();
+            return;
+        }
     });
 }
 
@@ -205,6 +214,9 @@ function pressAddToPlaylist() {
     $('.yt-uix-videoactionmenu-button')[0].click();
 }
 
+function pressMoreInfo() {
+    $('.yt-uix-button-expander')[0].click();
+}
 // LINK OPENING SHORTCUTS
 // In case selection isn't in focus.
 key('return', function() {
