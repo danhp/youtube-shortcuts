@@ -65,6 +65,15 @@ function checkShortcuts(event) {
             pressSubscribe();
             return;
         }
+
+        if (event.keyCode == o.playlist &&
+                    event.metaKey == o.metaplaylist &&
+                    event.ctrlKey == o.ctrlplaylist &&
+                    event.altKey == o.altplaylist &&
+                    event.shiftKey == o.shiftplaylist) {
+            pressAddToPlaylist();
+            return;
+        }
     });
 }
 
@@ -87,7 +96,10 @@ function goToUser() {
 function focusPlayer() {
     document.activeElement.blur();
     var mp = document.getElementById("movie_player");
-    mp.focus();
+    if (typeof mp !== "undefined") {
+        mp.focus();
+        window.scrollTo(0,0);
+    }
 }
 
 function unfocus() {
@@ -189,6 +201,10 @@ function pressSubscribe() {
     }
 }
 
+function pressAddToPlaylist() {
+    $('.yt-uix-videoactionmenu-button')[0].click();
+}
+
 // LINK OPENING SHORTCUTS
 // In case selection isn't in focus.
 key('return', function() {
@@ -198,7 +214,10 @@ key('return', function() {
 });
 
 // Open link in a new tab
-key('o', function() {
+key('shift+return', function(e) {
+    // Prevent the chrome global default
+    document.activeElement.blur();
+
     if (idx <= -1) return;
     var link = $(selector.replace('*', idx));
     var test = link.attr('href');

@@ -5,6 +5,7 @@ var userKeyEvent;
 var likeKeyEvent;
 var dislikeKeyEvent;
 var subscribeKeyEvent;
+var playlistKeyEvent;
 
 function update() {
     localStorage.version = version;
@@ -45,6 +46,11 @@ function init() {
         updateKeyChoice('subscribe', e);
     });
 
+    document.getElementById('playlist').addEventListener('keydown', function(e) {
+        subscribeKeyEvent = e;
+        updateKeyChoice('playlist', e);
+    });
+
     document.getElementById('save').addEventListener('click', function() {
         saveKeys();
 
@@ -77,6 +83,7 @@ function init() {
     initKey('like');
     initKey('dislike');
     initKey('subscribe');
+    initKey('playlist');
 }
 
 function initKey(key) {
@@ -224,6 +231,15 @@ function saveKeys() {
         chrome.storage.sync.set({'altsubscribe': e.altKey});
         chrome.storage.sync.set({'shiftsubscribe': e.shiftKey});
     }
+
+    e = playlistKeyEvent;
+    if (e) {
+        chrome.storage.sync.set({'playlist': e.keyCode});
+        chrome.storage.sync.set({'metaplaylist': e.metaKey});
+        chrome.storage.sync.set({'ctrlplaylist': e.ctrlKey});
+        chrome.storage.sync.set({'altplaylist': e.altKey});
+        chrome.storage.sync.set({'shiftplaylist': e.shiftKey});
+    }
 }
 
 function resetKeys() {
@@ -263,10 +279,17 @@ function resetKeys() {
     chrome.storage.sync.set({'altsubscribe': false});
     chrome.storage.sync.set({'shiftsubscribe': false});
 
+    chrome.storage.sync.set({'playlist': 80});
+    chrome.storage.sync.set({'metaplaylist': false});
+    chrome.storage.sync.set({'ctrlplaylist': false});
+    chrome.storage.sync.set({'altplaylist': false});
+    chrome.storage.sync.set({'shiftplaylist': false});
+
     initKey('focus');
     initKey('subbox');
     initKey('user');
     initKey('like');
     initKey('dislike');
     initKey('subscribe');
+    initKey('playlist');
 }
