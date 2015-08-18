@@ -165,6 +165,7 @@ function computeIndex() {
     $(s).children().children().each(function() {
         if ($(this)[0].localName == "h2") {
             localStorage.tidx = i;
+            return;
         } else {
             i++;
         }
@@ -234,6 +235,10 @@ key('shift+return', function(e) {
     var link = $(selector.replace('*', idx));
     var test = link.attr('href');
     if (typeof test !== "undefined"){
-        window.open(test);
+        var json = {
+            requestType: 'openLinkNewTab',
+            linkUrl: test
+        };
+        chrome.runtime.sendMessage(json);
     }
 });
