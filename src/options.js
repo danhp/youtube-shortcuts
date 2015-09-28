@@ -8,6 +8,9 @@ var subscribeKeyEvent;
 var playlistKeyEvent;
 var infoKeyEvent;
 
+var options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info'];
+var eventList = new Array(options.length);
+
 function update() {
     localStorage.version = version;
 }
@@ -17,45 +20,14 @@ window.addEventListener('load', function(event){
 }, false);
 
 function init() {
-    document.getElementById('focus').addEventListener('keydown', function(e) {
-        focusKeyEvent = e;
-        updateKeyChoice('focus', e);
-    });
-
-    document.getElementById('subbox').addEventListener('keydown', function(e) {
-        subboxKeyEvent = e;
-        updateKeyChoice('subbox', e);
-    });
-
-    document.getElementById('user').addEventListener('keydown', function(e) {
-        userKeyEvent = e;
-        updateKeyChoice('user', e);
-    });
-
-    document.getElementById('like').addEventListener('keydown', function(e) {
-        likeKeyEvent = e;
-        updateKeyChoice('like', e);
-    });
-
-    document.getElementById('dislike').addEventListener('keydown', function(e) {
-        dislikeKeyEvent = e;
-        updateKeyChoice('dislike', e);
-    });
-
-    document.getElementById('subscribe').addEventListener('keydown', function(e) {
-        subscribeKeyEvent = e;
-        updateKeyChoice('subscribe', e);
-    });
-
-    document.getElementById('playlist').addEventListener('keydown', function(e) {
-        subscribeKeyEvent = e;
-        updateKeyChoice('playlist', e);
-    });
-
-    document.getElementById('info').addEventListener('keydown', function(e) {
-        subscribeKeyEvent = e;
-        updateKeyChoice('info', e);
-    });
+    for (var i = 0; i < eventList.length; i++) {
+        (function(i) {
+            document.getElementById(options[i]).addEventListener('keydown', function(e) {
+                eventList[i] = e;
+                updateKeyChoice(e);
+            });
+        }(i))
+    }
 
     document.getElementById('save').addEventListener('click', function() {
         saveKeys();
@@ -83,14 +55,9 @@ function init() {
         update();
     }
 
-    initKey('focus');
-    initKey('subbox');
-    initKey('user');
-    initKey('like');
-    initKey('dislike');
-    initKey('subscribe');
-    initKey('playlist');
-    initKey('info');
+    for (var i = 0; i < options.length; i++) {
+        initKey(options[i]);
+    }
 }
 
 function initKey(key) {
@@ -103,10 +70,10 @@ function initKey(key) {
 
         if(ctrl || alt || meta || shift || code) {
             var result = '';
-            if(meta===true) result += 'Cmd + ';
-            if(ctrl===true) result += 'Ctrl + ';
-            if(alt===true) result += 'Alt + ';
-            if(shift===true) result += 'Shift + ';
+            if(meta) result += 'Cmd + ';
+            if(ctrl) result += 'Ctrl + ';
+            if(alt) result += 'Alt + ';
+            if(shift) result += 'Shift + ';
 
             result += translate(code);
 
@@ -117,7 +84,7 @@ function initKey(key) {
     });
 }
 
-function updateKeyChoice(key, event) {
+function updateKeyChoice(event) {
     var result = '';
     if(event.metaKey) result += 'Cmd + ';
     if(event.ctrlKey) result += 'Ctrl + ';
@@ -128,6 +95,84 @@ function updateKeyChoice(key, event) {
 
     event.target.value = result;
     event.preventDefault();
+}
+
+function saveKeys() {
+    for (var i = 0; i < options.length; i++) {
+        if (eventList[i]) {
+            setData(options[i], eventList[i]);
+        }
+    }
+}
+
+function setData(name, e) {
+    console.log(name);
+    store(name, e.keyCode);
+    store("meta" + name, e.metaKey);
+    store("ctrl" + name, e.ctrlKey);
+    store("alt" + name, e.altKey);
+    store("shift" + name, e.shiftKey);
+}
+
+function store(key, value) {
+    var obj = {};
+    obj[key] = value;
+
+    chrome.storage.sync.set(obj)
+}
+
+function resetKeys() {
+    chrome.storage.sync.set({'focus': 190});
+    chrome.storage.sync.set({'metafocus': false});
+    chrome.storage.sync.set({'ctrlfocus': false});
+    chrome.storage.sync.set({'altfocus': false});
+    chrome.storage.sync.set({'shiftfocus': false});
+
+    chrome.storage.sync.set({'subbox': 72});
+    chrome.storage.sync.set({'metasubbox': false});
+    chrome.storage.sync.set({'ctrlsubbox': false});
+    chrome.storage.sync.set({'altsubbox': false});
+    chrome.storage.sync.set({'shiftsubbox': false});
+
+    chrome.storage.sync.set({'user': 85});
+    chrome.storage.sync.set({'metauser': false});
+    chrome.storage.sync.set({'ctrluser': false});
+    chrome.storage.sync.set({'altuser': false});
+    chrome.storage.sync.set({'shiftuser': false});
+
+    chrome.storage.sync.set({'like': 65});
+    chrome.storage.sync.set({'metalike': false});
+    chrome.storage.sync.set({'ctrllike': false});
+    chrome.storage.sync.set({'altlike': false});
+    chrome.storage.sync.set({'shiftlike': false});
+
+    chrome.storage.sync.set({'dislike': 90});
+    chrome.storage.sync.set({'metadislike': false});
+    chrome.storage.sync.set({'ctrldislike': false});
+    chrome.storage.sync.set({'altdislike': false});
+    chrome.storage.sync.set({'shiftdislike': false});
+
+    chrome.storage.sync.set({'subscribe': 83});
+    chrome.storage.sync.set({'metasubscribe': false});
+    chrome.storage.sync.set({'ctrlsubscribe': false});
+    chrome.storage.sync.set({'altsubscribe': false});
+    chrome.storage.sync.set({'shiftsubscribe': false});
+
+    chrome.storage.sync.set({'playlist': 80});
+    chrome.storage.sync.set({'metaplaylist': false});
+    chrome.storage.sync.set({'ctrlplaylist': false});
+    chrome.storage.sync.set({'altplaylist': false});
+    chrome.storage.sync.set({'shiftplaylist': false});
+
+    chrome.storage.sync.set({'info': 79});
+    chrome.storage.sync.set({'metainfo': false});
+    chrome.storage.sync.set({'ctrlinfo': false});
+    chrome.storage.sync.set({'altinfo': false});
+    chrome.storage.sync.set({'shiftinfo': false});
+
+    for (var i = 0; i < options.length; i++) {
+        initKey(options[i]);
+    }
 }
 
 function translate(code) {
@@ -184,135 +229,3 @@ function translate(code) {
     return result;
 }
 
-function saveKeys() {
-    var e = focusKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'focus': e.keyCode});
-        chrome.storage.sync.set({'metafocus': e.metaKey});
-        chrome.storage.sync.set({'ctrlfocus': e.ctrlKey});
-        chrome.storage.sync.set({'altfocus': e.altKey});
-        chrome.storage.sync.set({'shiftfocus': e.shiftKey});
-    }
-
-    e = subboxKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'subbox': e.keyCode});
-        chrome.storage.sync.set({'metasubbox': e.metaKey});
-        chrome.storage.sync.set({'ctrlsubbox': e.ctrlKey});
-        chrome.storage.sync.set({'altsubbox': e.altKey});
-        chrome.storage.sync.set({'shiftsubbox': e.shiftKey});
-    }
-
-    e = userKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'user': e.keyCode});
-        chrome.storage.sync.set({'metauser': e.metaKey});
-        chrome.storage.sync.set({'ctrluser': e.ctrlKey});
-        chrome.storage.sync.set({'altuser': e.altKey});
-        chrome.storage.sync.set({'shiftuser': e.shiftKey});
-    }
-
-    e = likeKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'like': e.keyCode});
-        chrome.storage.sync.set({'metalike': e.metaKey});
-        chrome.storage.sync.set({'ctrllike': e.ctrlKey});
-        chrome.storage.sync.set({'altlike': e.altKey});
-        chrome.storage.sync.set({'shiftlike': e.shiftKey});
-    }
-
-    e = dislikeKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'dislike': e.keyCode});
-        chrome.storage.sync.set({'metadislike': e.metaKey});
-        chrome.storage.sync.set({'ctrldislike': e.ctrlKey});
-        chrome.storage.sync.set({'altdislike': e.altKey});
-        chrome.storage.sync.set({'shiftdislike': e.shiftKey});
-    }
-
-    e = subscribeKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'subscribe': e.keyCode});
-        chrome.storage.sync.set({'metasubscribe': e.metaKey});
-        chrome.storage.sync.set({'ctrlsubscribe': e.ctrlKey});
-        chrome.storage.sync.set({'altsubscribe': e.altKey});
-        chrome.storage.sync.set({'shiftsubscribe': e.shiftKey});
-    }
-
-    e = playlistKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'playlist': e.keyCode});
-        chrome.storage.sync.set({'metaplaylist': e.metaKey});
-        chrome.storage.sync.set({'ctrlplaylist': e.ctrlKey});
-        chrome.storage.sync.set({'altplaylist': e.altKey});
-        chrome.storage.sync.set({'shiftplaylist': e.shiftKey});
-    }
-
-    e = infoKeyEvent;
-    if (e) {
-        chrome.storage.sync.set({'info': e.keyCode});
-        chrome.storage.sync.set({'metainfo': e.metaKey});
-        chrome.storage.sync.set({'ctrlinfo': e.ctrlKey});
-        chrome.storage.sync.set({'altinfo': e.altKey});
-        chrome.storage.sync.set({'shiftinfo': e.shiftKey});
-    }
-}
-
-function resetKeys() {
-    chrome.storage.sync.set({'focus': 190});
-    chrome.storage.sync.set({'metafocus': false});
-    chrome.storage.sync.set({'ctrlfocus': false});
-    chrome.storage.sync.set({'altfocus': false});
-    chrome.storage.sync.set({'shiftfocus': false});
-
-    chrome.storage.sync.set({'subbox': 72});
-    chrome.storage.sync.set({'metasubbox': false});
-    chrome.storage.sync.set({'ctrlsubbox': false});
-    chrome.storage.sync.set({'altsubbox': false});
-    chrome.storage.sync.set({'shiftsubbox': false});
-
-    chrome.storage.sync.set({'user': 85});
-    chrome.storage.sync.set({'metauser': false});
-    chrome.storage.sync.set({'ctrluser': false});
-    chrome.storage.sync.set({'altuser': false});
-    chrome.storage.sync.set({'shiftuser': false});
-
-    chrome.storage.sync.set({'like': 65});
-    chrome.storage.sync.set({'metalike': false});
-    chrome.storage.sync.set({'ctrllike': false});
-    chrome.storage.sync.set({'altlike': false});
-    chrome.storage.sync.set({'shiftlike': false});
-
-    chrome.storage.sync.set({'dislike': 90});
-    chrome.storage.sync.set({'metadislike': false});
-    chrome.storage.sync.set({'ctrldislike': false});
-    chrome.storage.sync.set({'altdislike': false});
-    chrome.storage.sync.set({'shiftdislike': false});
-
-    chrome.storage.sync.set({'subscribe': 83});
-    chrome.storage.sync.set({'metasubscribe': false});
-    chrome.storage.sync.set({'ctrlsubscribe': false});
-    chrome.storage.sync.set({'altsubscribe': false});
-    chrome.storage.sync.set({'shiftsubscribe': false});
-
-    chrome.storage.sync.set({'playlist': 80});
-    chrome.storage.sync.set({'metaplaylist': false});
-    chrome.storage.sync.set({'ctrlplaylist': false});
-    chrome.storage.sync.set({'altplaylist': false});
-    chrome.storage.sync.set({'shiftplaylist': false});
-
-    chrome.storage.sync.set({'info': 79});
-    chrome.storage.sync.set({'metainfo': false});
-    chrome.storage.sync.set({'ctrlinfo': false});
-    chrome.storage.sync.set({'altinfo': false});
-    chrome.storage.sync.set({'shiftinfo': false});
-
-    initKey('focus');
-    initKey('subbox');
-    initKey('user');
-    initKey('like');
-    initKey('dislike');
-    initKey('subscribe');
-    initKey('playlist');
-    initKey('info');
-}
