@@ -83,6 +83,42 @@ function checkShortcuts(event) {
             pressMoreInfo();
             return;
         }
+
+        if (event.keyCode == o.listDown &&
+                    event.metaKey == o.metalistDown &&
+                    event.ctrlKey == o.ctrllistDown &&
+                    event.altKey == o.altlistDown &&
+                    event.shiftKey == o.shiftlistDown) {
+            pressListDown();
+            return;
+        }
+
+        if (event.keyCode == o.listUp &&
+                    event.metaKey == o.metalistUp &&
+                    event.ctrlKey == o.ctrllistUp &&
+                    event.altKey == o.altlistUp &&
+                    event.shiftKey == o.shiftlistUp) {
+            pressListUp();
+            return;
+        }
+
+        if (event.keyCode == o.tabLeft &&
+                    event.metaKey == o.metatabLeft &&
+                    event.ctrlKey == o.ctrltabLeft &&
+                    event.altKey == o.alttabLeft &&
+                    event.shiftKey == o.shifttabLeft) {
+            pressTabLeft();
+            return;
+        }
+
+        if (event.keyCode == o.tabRight &&
+                    event.metaKey == o.metatabRight &&
+                    event.ctrlKey == o.ctrltabRight &&
+                    event.altKey == o.alttabRight &&
+                    event.shiftKey == o.shifttabRight) {
+            pressTabRight();
+            return;
+        }
     });
 }
 
@@ -137,7 +173,7 @@ var select = function() {
     previousSelection = link.get()[0];
 };
 
-key('j', function() {
+function pressListDown() {
     if (idx < $(selector_all).length-1) {
         idx++;
         select();
@@ -145,14 +181,14 @@ key('j', function() {
             $(".yt-uix-load-more").click();
         }
     }
-});
+}
 
-key('k', function() {
+function pressListUp() {
     if (idx > 0) {
         idx--;
         select();
     }
-});
+}
 
 // NAV BAR SHORTCUTS
 var tab_selector = ".yt-uix-button-epic-nav-item:nth(*)";
@@ -172,20 +208,20 @@ function computeIndex() {
     });
 }
 
-key(']', function() {
+function pressTabRight() {
     if (localStorage.tidx < $(tab_selector_all).length - 1) {
         var link = $(tab_selector.replace('*', localStorage.tidx));
         location.href = link.attr('href');
     }
-});
+}
 
-key('[', function() {
+function pressTabLeft() {
     if (localStorage.tidx > 0) {
         localStorage.tidx--;
         var link = $(tab_selector.replace('*', localStorage.tidx));
         location.href = link.attr('href');
     }
-});
+}
 
 // VIDEO PAGE SHORTCUTS
 function pressLike() {

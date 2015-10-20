@@ -26,6 +26,7 @@
         </style>
         <script src="options.js"></script>
     </head>
+
     <body class="chrome-bootstrap">
         <div class="frame">
             <div class="navigation">
@@ -38,11 +39,13 @@
                     </li>
                 </ul>
             </div>
+
             <div class="mainview view">
                 <div id="settings" class="selected">
                     <header>
                         <h1>Keyboard Shortcuts</h1>
                     </header>
+
                     <div class="content">
                         <section>
                             <h3>Custom Shortcuts</h3>
@@ -54,11 +57,11 @@
                                     <td><input type="text" id="focus"></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="focus">Go to Subsriptions</label></td>
+                                    <td><label for="subbox">Go to Subsriptions</label></td>
                                     <td><input type="text" id="subbox"></td>
                                 </tr>
                                 <tr>
-                                    <td><label for="focus">Go to User Page</label></td>
+                                    <td><label for="user">Go to User Page</label></td>
                                     <td><input type="text" id="user"></td>
                                 </tr>
                                 <tr>
@@ -81,13 +84,32 @@
                                     <td><label for="info">Toggle Video Description</label></td>
                                     <td><input type="text" id="info"></td>
                                 </tr>
+                                <tr>
+                                    <td><label for="listDown">Scroll to next list item</label></td>
+                                    <td><input type="text" id="listDown"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="listUp">Scroll to previous list item</label></td>
+                                    <td><input type="text" id="listUp"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="tabLeft">Go to previous tab in strip</label></td>
+                                    <td><input type="text" id="tabLeft"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="tabRight">Go to next tab in strip</label></td>
+                                    <td><input type="text" id="tabRight"></td>
+                                </tr>
                             </table>
                         </section>
+
                         <div class="controls">
                             <button id="save">Save</button>
                             <button id="reset">Reset to Default</button>
                         </div>
+
                         <div id="success_message" class="alert">Options saved</div>
+
                         <section>
                             <h3>Existing YouTube Shortcuts (don't shadow these)</h3>
                             <p>K - Pause the video.</p>
@@ -95,6 +117,7 @@
                             <p>L - Skip forward 10 secs.</p>
                             <p>/ - Focus on search box.</p>
                         </section>
+
                         <section>
                             <h3>Aditional YouTube Player Shortcuts (once you have focus)</h3>
                             <p>Space - Pause the video.</p>
