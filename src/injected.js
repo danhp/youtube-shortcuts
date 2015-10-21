@@ -254,6 +254,7 @@ function pressAddToPlaylist() {
 function pressMoreInfo() {
     $('.yt-uix-button-expander')[0].click();
 }
+
 // LINK OPENING SHORTCUTS
 // In case selection isn't in focus.
 key('return', function() {
@@ -278,3 +279,102 @@ key('shift+return', function(e) {
         chrome.runtime.sendMessage(json);
     }
 });
+
+// SHORTCUT MODALd
+// Inject the shortcut list.
+$.get(chrome.extension.getURL('/popup.html'), function(data) {
+    $(data).appendTo('body');
+    correctListing();
+});
+
+key('shift+/', function(e) {
+    jQuery.facebox({ div: '#shortcuts'  });
+});
+
+function correctListing() {
+    var options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info',
+                   'listDown', 'listUp', 'tabLeft', 'tabRight'];
+
+    var key;
+    for (var i = 0; i < options.length; i++) {
+        key = setKey(options[i]);
+    }
+}
+
+function setKey(key) {
+    chrome.storage.sync.get(null, function(o) {
+        var meta = o['meta' + key];
+        var ctrl = o['ctrl' + key];
+        var alt = o['alt' + key];
+        var shift = o['shift' + key];
+        var code = o[key];
+
+        if(ctrl || alt || meta || shift || code) {
+            var result = '';
+            if(meta) result += 'Cmd + ';
+            if(ctrl) result += 'Ctrl + ';
+            if(alt) result += 'Alt + ';
+            if(shift) result += 'Shift + ';
+
+            result += translate(code);
+
+            document.getElementById(key).innerHTML = result;
+        } else {
+            document.getElementById(key).innerHTML = 'disabled';
+        }
+    });
+}
+
+function translate(code) {
+    var result = '';
+
+    if(code>=48 && code<=90) {
+        result += String.fromCharCode(code).toLowerCase();
+    } else if(code==37) {
+        result += 'Left';
+    } else if(code==38) {
+        result += 'Up';
+    } else if(code==39) {
+        result += 'Right';
+    } else if(code==40) {
+        result += 'Down';
+    } else if(code==188) {
+        result += ',';
+    } else if(code==190) {
+        result += '.';
+    } else if(code==191) {
+        result += '/';
+    } else if(code==186) {
+        result += ';';
+    } else if(code==222) {
+        result += '\'';
+    } else if(code==219) {
+        result += '[';
+    } else if(code==221) {
+        result += ']';
+    } else if(code==220) {
+        result += '\\';
+    } else if(code==192) {
+        result += '`';
+    } else if(code==27) {
+        result += 'Esc';
+    } else if(code==32) {
+        result += 'Space';
+    } else if(code==13) {
+        result += 'Enter';
+    } else if(code==8) {
+        result += 'Backspace';
+    } else if(code==9) {
+        result += 'Tab';
+    } else if(code==20) {
+        result += 'Caps Lock';
+    } else if(code==187) {
+        result += '=';
+    } else if(code==189) {
+        result += '-';
+    } else if(code !=91 && code !=93 && !(code >=16 && code <=19)) {
+        result += '[' + code + ']';
+    }
+
+    return result;
+}

@@ -1,16 +1,4 @@
 var version = '1.2.0';
-var focusKeyEvent;
-var subboxKeyEvent;
-var userKeyEvent;
-var likeKeyEvent;
-var dislikeKeyEvent;
-var subscribeKeyEvent;
-var playlistKeyEvent;
-var infoKeyEvent;
-var listDownKeyEvent;
-var listUpKeyEvent;
-var tabLeftKeyEvent;
-var tabRightKeyEvent;
 
 var options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info',
                'listDown', 'listUp', 'tabLeft', 'tabRight'];

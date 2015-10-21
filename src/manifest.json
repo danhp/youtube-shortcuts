@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Youtube™ Shortcuts",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "description": "Focus on the Youtube player with a the press of a button",
     "homepage_url": "https://phamdaniel.github.io",
     "options_page": "options.html",
@@ -21,11 +21,17 @@
         {
             "matches": ["*://www.youtube.com/*"],
             "run_at": "document_end",
+            "css":[
+                "lib/facebox.css",
+                "popup.css"
+            ],
             "js": [
                     "lib/jquery-1.11.2.min.js",
                     "lib/keymaster.min.js",
+                    "lib/facebox.js",
                     "injected.js"
             ]
         }
-    ]
+    ],
+    "web_accessible_resources": ["popup.html"]
 }
