@@ -1,7 +1,7 @@
 var version = '1.2.0';
 
 var options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info',
-               'listDown', 'listUp', 'tabLeft', 'tabRight'];
+               'listDown', 'listUp', 'tabLeft', 'tabRight', 'dismissList', 'dismissVideo'];
 var eventList = new Array(options.length);
 
 function update() {
@@ -134,6 +134,8 @@ function resetKeys() {
     setDefault("listUp", 75);
     setDefault("tabLeft", 219);
     setDefault("tabRight", 221);
+    setDefault("dismissList", 88);
+    setDefault("dismissVideo", 81);
 
     for (var i = 0; i < options.length; i++) {
         initKey(options[i]);

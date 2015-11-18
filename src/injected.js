@@ -1,7 +1,7 @@
 document.addEventListener("keydown", checkShortcuts);
 
 var options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info',
-               'listDown', 'listUp', 'tabLeft', 'tabRight'];
+               'listDown', 'listUp', 'tabLeft', 'tabRight', 'dismissList', 'dismissVideo'];
 
 function checkShortcuts(event) {
     var focus = document.activeElement;
@@ -88,7 +88,7 @@ var functions = {
     listDown: function pressListDown() {
         if (idx < $(selector_all).length-1) {
             idx++;
-            select();
+            select(true);
             if (idx == $(selector_all).length-2) {
                 $(".yt-uix-load-more").click();
             }
@@ -97,7 +97,7 @@ var functions = {
     listUp: function pressListUp() {
         if (idx > 0) {
             idx--;
-            select();
+            select(false);
         }
     },
     tabLeft: function pressTabRight() {
@@ -113,6 +113,13 @@ var functions = {
             location.href = link.attr('href');
         }
     },
+    dismissList: function dissmissList() {
+        $(".watched").closest("li").fadeOut();
+    },
+    dismissVideo: function dismissVideo() {
+        var selector = ".dismiss-menu-choice:nth(*)"
+        $(selector.replace('*', idx)).click();
+    }
 }
 
 function unfocus() {
@@ -128,8 +135,30 @@ var previousSelection = null;
 
 var idx = -1;
 
-var select = function() {
-    var link = $(selector.replace('*', idx));
+// Fixes the index if the elements is hidden.
+var select = function(down) {
+    var saved = idx;
+    var check = true;
+    while (check) {
+        var link = $(selector.replace('*', idx));
+        if ($(link).is(":hidden")) {
+            if (down) {
+                if (idx >= $(selector_all).length-2) {
+                    $(".yt-uix-load-more").click();
+                }
+                idx++;
+            } else {
+                if (idx >= 1) {
+                    idx--;
+                } else {
+                    idx = saved + 1;
+                    return;
+                }
+            }
+        } else {
+            check = false
+        }
+    }
     if (previousSelection) {
         if (link.get()[0] == previousSelection) {
             return;
