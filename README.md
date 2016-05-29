@@ -9,4 +9,4 @@
  - [Chrome Webstore](https://chrome.google.com/webstore/detail/youtube-focus-shortcut/fnapinimcdpmgkedhjbfckmpjppnbhba?hl=en-US&gl=CA)
 
 ## Liscence
-MIT © [Daniel Pham](https://daniwa.github.io)
+MIT © [Daniel Pham](https://danhp.github.io)
