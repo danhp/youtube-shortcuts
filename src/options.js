@@ -1,4 +1,4 @@
-var version = '1.2.0';
+var version = '1.7.0';
 
 var options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info',
     'listDown', 'listUp', 'tabLeft', 'tabRight', 'dismissList', 'dismissVideo'];
@@ -14,12 +14,12 @@ window.addEventListener('load', event => {
 
 function init() {
   for (var i = 0; i < eventList.length; i++) {
-    (i => {
+    (() => {
       document.getElementById(options[i]).addEventListener('keydown', e => {
         eventList[i] = e;
         updateKeyChoice(e);
       });
-    }(i))
+    })()
   }
 
   document.getElementById('save').addEventListener('click', () => {

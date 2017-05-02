@@ -1,16 +1,23 @@
 document.addEventListener("keydown", checkShortcuts);
 
-var options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info',
+const options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'playlist', 'info',
     'listDown', 'listUp', 'tabLeft', 'tabRight', 'dismissList', 'dismissVideo'];
+
+// LIST NAVIGATION HELPER
+const selector = "div#dismissable ytd-thumbnail a:nth(*)";
+const selector_all = selector.replace(':nth(*)', '');
+
+var previousSelection = null;
+var idx = -1;
+
 
 function checkShortcuts(event) {
   var focus = document.activeElement;
-  if (focus.nodeName == "INPUT" || focus.nodeName == "TEXTAREA") {
+  if (focus.nodeName == "INPUT" || focus.nodeName == "TEXTAREA")
     return;
-  }
 
   chrome.storage.sync.get(null, o => {
-    if (event.keyCode == 27) {
+    if (event.key == 'Escape') {
       unfocus();
       return;
     }
@@ -34,19 +41,19 @@ var functions = {
     window.location.href = "https://www.youtube.com/feed/subscriptions";
   },
   user() {
-    var link = document.querySelectorAll('.yt-user-photo')[0];
-    if (link) {
+    const link = document.querySelectorAll('div#top-row ytd-video-owner-renderer a')[0];
+    if (link.href) {
       // Go to user page from the video page.
       window.location.href = link.href + '/videos';
     } else {
       // Go to user from list entry
-      var userList = document.querySelectorAll('.yt-lockup-byline a');
+      var userList = document.querySelectorAll('#byline a');
       window.location.href = userList[idx].href + '/videos';
     }
   },
   focus() {
     document.activeElement.blur();
-    var mp = document.getElementById("movie_player");
+    const mp = document.getElementById("movie_player");
     if (mp) {
       mp.focus();
       window.scrollTo(0,0);
@@ -55,23 +62,23 @@ var functions = {
 
   // VIDEO PAGE SHORTCUTS
   like() {
-    var button = $('.like-button-renderer-like-button');
-    button[0].classList.contains('hid') ? button[1].click() : button[0].click();
+    const buttons = $('div#top-level-buttons ytd-toggle-button-renderer').children();
+    buttons[0].click();
   },
   dislike() {
-    var button = $('.like-button-renderer-dislike-button');
-    button[0].classList.contains('hid') ? button[1].click() : button[0].click();
+    const buttons = $('div#top-level-buttons ytd-toggle-button-renderer').children();
+    buttons[1].click();
   },
   subscribe() {
-    var buttons = $('.yt-uix-subscription-button');
-    if (buttons.length == 1)
-      $('.yt-uix-subscription-button')[0].click();
+    const button = $('paper-button.ytd-subscribe-button-renderer');
+    button[0].click();
   },
   playlist() {
-    $('.yt-uix-videoactionmenu-button')[0].click();
+    const buttons = $('div#top-level-buttons ytd-button-renderer').children();
+    buttons[0].click();
   },
   info() {
-    $('.yt-uix-button-expander')[0].click();
+    $('#more').is(':hidden') ? $('#less')[0].click() : $('#more')[0].click();
   },
 
   // List navigation shortcuts
@@ -104,7 +111,7 @@ var functions = {
     }
   },
   dismissList() {
-    $(".watched").closest("li").fadeOut();
+    $(".ytd-thumbnail-overlay-resume-playback-renderer").closest('ytd-grid-video-renderer').fadeOut();
   },
   dismissVideo() {
     var selector = ".dismiss-menu-choice:nth(*)"
@@ -117,13 +124,6 @@ function unfocus() {
   var b = document.getElementById("movie_player");
   b.blur();
 }
-
-// LIST NAVIGATION HELPER
-var selector = "li div div div h3 a:nth(*)";
-var selector_all = selector.replace(':nth(*)', '');
-var previousSelection = null;
-
-var idx = -1;
 
 // Fixes the index if the elements is hidden.
 var select = (down) => {
