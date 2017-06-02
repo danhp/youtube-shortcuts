@@ -4,7 +4,7 @@ const options = ['focus', 'subbox', 'user', 'like', 'dislike', 'subscribe', 'pla
     'listDown', 'listUp', 'tabLeft', 'tabRight', 'dismissList', 'dismissVideo'];
 
 // LIST NAVIGATION HELPER
-const selector = "div#dismissable ytd-thumbnail a:nth(*)";
+const selector = "div#dismissable ytd-thumbnail:not(.ytd-compact-video-renderer) a:nth(*)";
 const selector_all = selector.replace(':nth(*)', '');
 
 var previousSelection = null;
